@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    `maven-publish`
+    id("maven-publish")
 }
 
 android {
@@ -38,6 +38,8 @@ publishing {
             groupId = "com.github.blucky8649"
             artifactId = "messenger-bot"
             version = "0.0.1"
+
+            artifact("$buildDir/outputs/aar/${artifactId}-release.aar")
         }
     }
 
