@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    `maven-publish`
 }
 
 android {
@@ -31,6 +32,17 @@ android {
         jvmTarget = "1.8"
     }
 }
+publishing {
+    publications {
+        create<MavenPublication>("release") {
+            groupId = "com.github.blucky8649"
+            artifactId = "messenger-bot"
+            version = "0.0.1"
+        }
+    }
+
+}
+
 
 dependencies {
 
