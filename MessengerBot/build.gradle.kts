@@ -1,7 +1,10 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("maven-publish")
+    id("signing")
 }
 
 android {
@@ -32,17 +35,76 @@ android {
         jvmTarget = "1.8"
     }
 }
-publishing {
-    publications {
-        create<MavenPublication>("release") {
-            groupId = "com.github.blucky8649"
-            artifactId = "messenger-bot"
-            version = "0.0.1"
+afterEvaluate {
+    val GROUP_ID = "io.github.blucky8649"
+    val ARTIFACT_ID = "MessengerBot"
+    val VERSION = "0.0.2"
 
-            artifact("$buildDir/outputs/aar/${artifactId}-release.aar")
+    publishing {
+
+        publications {
+            create<MavenPublication>("release") {
+                groupId = GROUP_ID
+                artifactId = ARTIFACT_ID
+                version = VERSION
+
+                artifact("$buildDir/outputs/aar/${artifactId}-release.aar")
+
+                pom {
+                    name.set("MessengerBot")
+                    groupId = GROUP_ID
+                    description.set("you can easily create your own messenger bots for any messenger apps")
+                    url.set("https://github.com/blucky8649/MessengerBot")
+                    licenses {
+                        license {
+                            name.set("MIT license")
+                            url.set("https://opensource.org/licenses/MIT")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set("blucky8649")
+                            name.set("DongYeon-Lee")
+                            email.set("blucky8649@gmail.com")
+                        }
+                    }
+                    scm {
+                        url.set("https://github.com/blucky8649/MessengerBot.git")
+                    }
+                }
+            }
         }
     }
+}
 
+
+tasks {
+    val sourcesJar by creating(Jar::class) {
+        archiveClassifier.set("sources")
+        from(android.sourceSets.getByName("main").java.srcDirs)
+    }
+
+    val javadocJar by creating(Jar::class) {
+        val javadoc by tasks
+        from(javadoc)
+        archiveClassifier.set("javadoc")
+    }
+    artifacts {
+        archives(sourcesJar)
+        archives(javadocJar)
+    }
+}
+
+signing {
+    useInMemoryPgpKeys(
+        rootProject.ext["signing.keyId"] as String,
+        rootProject.ext["signing.key"] as String,
+        rootProject.ext["signing.password"] as String,
+    )
+
+    sign(publishing.publications)
+
+    sign(configurations.archives.name)
 }
 
 
