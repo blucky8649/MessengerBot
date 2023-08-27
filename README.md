@@ -1,12 +1,11 @@
 # MessengerBot
-[![](https://jitpack.io/v/blucky8649/MessengerBot.svg)](https://jitpack.io/#blucky8649/MessengerBot)  
 Create your own MessengerBot for Any Messenger Apps
 
 ### How to use
 in **grable.build(:app)**
 ```groovy
 dependencies {
-    implementation 'com.github.blucky8649:MessengerBot:0.0.1'
+    implementation 'io.github.blucky8649:MessengerBot:0.0.2'
 }
 ```
 
